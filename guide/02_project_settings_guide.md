@@ -63,9 +63,9 @@ INSTALLED_APPS = [
 ### 3. middleware 추가
 
 ```python
-    MIDDLEWARE = [
+MIDDLEWARE = [
 	...
-		'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 ```
 
