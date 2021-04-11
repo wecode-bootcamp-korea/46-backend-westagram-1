@@ -8,11 +8,11 @@
 - 새롭게 생성한 브랜치로 이동후 `students` 폴더에 본인 이름의 폴더를 만들어주세요. 
 (ex. `students` > `soheon-lee` 폴더 생성)
 - `$ django-admin startproject westagram .` 명령어로 Django 프로젝트를 생성해주세요.
-- https://www.notion.so/wecode/Django-3b175617219448bdb6b428bad41f2951 링크를 참고해서 프로젝트 초기 설정을 진행해주세요.
+- https://www.notion.so/wecode/Django-6dbc3a4f5594433d974e0ed3c8d22858 링크를 참고해서 프로젝트 초기 설정을 진행해주세요.
 - 이렇게 폴더 및 파일 구조 세팅이 완료되면 작업을 진행합니다.
-- 작업 중간 중간 commit 잘 남기고, 완료 시 origin master로 push 후 PR 까지 완료해주세요.
+- 작업 중간 중간 commit 잘 남기고, 완료 시 origin main로 push 후 PR(pull request) 까지 완료해주세요.
 - 리뷰 내용은 반영해서 코드 수정하고 다시 push 해주세요.
-- 해당 branch가 merge되면 미션 완료입니다.
+- 해당 branch의 label이 Accepted로 바뀌면 미션 완료입니다.
 
 ## 리뷰 코멘트를 반영한 뒤 진행 방법
 - 멘토님들이 남긴 코멘트를 잘 읽고 브랜치에서 코드를 수정해주세요.
@@ -24,22 +24,19 @@
     - 회원가입 로직 작성
     - url 연결
     - 이메일이나 패스워드 키가 전달되지 않았을 시, {"message": "KEY_ERROR"}, status code 400 반환
+    - 회원가입 성공시 {"message": "SUCCESS"}, status code 201 return
 
 - [User] 로그인 엔드포인트(SignIn):
     - 로그인 로직 작성
     - url 연결
     - 로그인 성공시 {"message": "SUCCESS"}, status code 200 return
-    - 실패시 {"message": "INVALID_USER"}, status code 401 에러 return
+    - 계정 잘 못 입력시 {"message": "NOT_FOUND"}, status code 404 에러 return
+    - 비밀번호 잘 못 입력시 {"message": "INVALID_USER"}, status code 401 에러 return
 
 ## 보너스 구현 사항
 - [Posting] 특정 유저의 게시물에 댓글 달기 엔드포인트
     - 유저 아이디, 댓글 내용, 최초 댓글 단 시간, 수정 시간 포함될 것
-- [Posting] 특정 유저의 게시물에 '좋아요' 누르기 엔드포인트 
 - [Posting] 게시물 올리기
-- [User] 회원가입시 email, password validation
-    - email: '@' 포함하였는지 검사
-    - password: 8글자 이상인지 검사
-- [User] 다른 회원 follow 하기 엔드포인트
 
 ## 위코드 파이썬 코딩 컨벤션
 - Import 순서
