@@ -30,7 +30,7 @@
     - 로그인 로직 작성
     - url 연결
     - 로그인 성공시 {"message": "SUCCESS"}, status code 200 return
-    - 계정 잘 못 입력시 {"message": "NOT_FOUND"}, status code 404 에러 return
+    - 계정 잘 못 입력시 {"message": "INVALID_USER"}, status code 401 에러 return
     - 비밀번호 잘 못 입력시 {"message": "INVALID_USER"}, status code 401 에러 return
 
 ## 보너스 구현 사항
