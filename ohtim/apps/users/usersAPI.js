@@ -10,7 +10,7 @@ const newUserSignUp = async (req, res) => {
       [name, email, password]
     )
     res.status(201).json({
-      message: 'Signup successful! 👋',
+      message: 'New user created! 👋',
     })
   } catch (error) {
     console.error(error)

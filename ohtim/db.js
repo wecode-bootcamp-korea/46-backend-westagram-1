@@ -12,16 +12,12 @@ const db_log = process.env.DB_LOGGING
 const PORT = process.env.PORT
 
 const myDataSource = new DataSource({
-  type: db_type,
-  host: db_host,
-  port: db_port,
-  username: db_user,
-  password: db_pass,
-  database: db_database,
-})
-
-myDataSource.initialize().then(() => {
-  console.log('💾 Database Initialized')
+  type: process.env.DB_CONNECTION,
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  username: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_DATABASE,
 })
 
 export { PORT, myDataSource }
