@@ -6,6 +6,13 @@ const logger = require("morgan"); // morgan 모듈 추가하기
 const app = express();
 const { DataSource } = require("typeorm");
 
+//미들웨어
+app.use(cors());
+app.use(logger("combined"));
+app.use(express.json());
+
+const port = process.env.PORT;
+
 const appDataSource = new DataSource({
   type: process.env.DB_CONNECTION,
   host: process.env.DB_HOST,
@@ -19,14 +26,27 @@ appDataSource.initialize().then(() => {
   console.log("Data Source has been initialized!");
 });
 
-//미들웨어
-app.use(cors());
-app.use(logger("combined"));
-app.get("/create_users_table", function (req, res, next) {
-  res.json({ message: "userCreated" });
+app.get("/ping", function (req, res, next) {
+  res.json({ message: "pong" });
 });
 
-const port = process.env.PORT;
+//create a users
+
+app.post("/users", async (req, res) => {
+  const { name, email, profileImage, password } = req.body; //구조분해할당
+
+  await appDataSource.query(
+    `INSERT INTO users(
+              name,
+              email,
+              profile_image,
+              password
+          ) VALUES (?, ?, ?, ?);
+          `,
+    [name, email, profileImage, password]
+  );
+  res.status(201).json({ message: "usersCreated" });
+});
 
 app.listen(8000, function () {
   console.log("server listening on port 8000");
