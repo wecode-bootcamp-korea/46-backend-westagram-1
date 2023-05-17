@@ -33,7 +33,7 @@ app.get("/ping", function (req, res, next) {
 //create a users
 
 app.post("/users", async (req, res) => {
-  const { name, email, profileImage, password } = req.body; //구조분해할당
+  const { name, email, profileImage, password } = req.body;
 
   await appDataSource.query(
     `INSERT INTO users(
@@ -46,6 +46,24 @@ app.post("/users", async (req, res) => {
     [name, email, profileImage, password]
   );
   res.status(201).json({ message: "usersCreated" });
+});
+
+app.post("/posts", async (req, res) => {
+  const { title, content, userID, createdAt, updatedAt } = req.body;
+  await appDataSource.query(
+    `INSERT INTO posts(
+          posts.title,
+          posts.content,
+          user.id,
+          posts.created_at,
+          posts.updated_at
+      FROM users
+      INNER JOIN posts ON user.id=posts.user.id
+      ) VALUES (?, ?, ?, ?,?);
+      `,
+    [title, content, userID, createdAt, updatedAt]
+  );
+  res.status(201).json({ message: "postsCreated" });
 });
 
 app.listen(8000, function () {
