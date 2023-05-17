@@ -1,19 +1,17 @@
-import express from "express";
-import cors from "cors";
-import morgan from "morgan";
-import * as http from "http";
-import { myDataSource } from "./env.js";
-import { PORT } from "./db.js";
+import express from 'express'
+import cors from 'cors'
+import morgan from 'morgan'
+import { PORT } from './db.js'
+import { myDataSource } from './db.js'
 
-const app = express();
-app.use(cors());
-app.use(morgan("dev"));
-app.use(express.json());
+const app = express()
+app.use(cors())
+app.use(morgan('dev'))
+app.use(express.json())
+myDataSource.initialize()
 
-const server = http.createServer(app);
+app.listen(PORT, () => {
+  console.log(`👂 Listening on 127.0.0.1:${PORT}...`)
+})
 
-const start = async () => {
-  server.listen(PORT, () => {
-    console.log(`server is listening on port:${PORT}`);
-  });
-};
+export { app }
