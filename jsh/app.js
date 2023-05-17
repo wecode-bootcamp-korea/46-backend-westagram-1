@@ -8,7 +8,7 @@ const { DataSource } = require('typeorm');
 const app = express();
 // 미들웨어 등록
 app.use(cors());
-app.use(logger('combined'));
+app.use(logger('dev'));
 app.use(express.json());
 
 const port = process.env.port
@@ -53,22 +53,37 @@ app.get('/ping', function(req, res, next) {
 //   res.status(201).json({ message : "userCreated"});
 // }) 
 
-app.post('/posts/signup', async(req, res, next) => {
-  const { title, content, imageUrl, user_id } = req.body
+// app.post('/posts/signup', async(req, res, next) => {
+//   const { title, content, imageUrl, user_id } = req.body
 
-  await appDataSource.query(
-      `INSERT INTO posts(
-          title, 
-          content,
-          imageUrl,
-          user_id
-      ) VALUES (?, ?, ?, ?);
-      `, [title, content, imageUrl, user_id]
-  );
+//   await appDataSource.query(
+//       `INSERT INTO posts(
+//           title, 
+//           content,
+//           imageUrl,
+//           user_id
+//       ) VALUES (?, ?, ?, ?);
+//       `, [title, content, imageUrl, user_id]
+//   );
 
-  res.status(201).json({ message : "postCreated"});
-}) 
+//   res.status(201).json({ message : "postCreated"});
+// }) 
 
+app.get("/posts/lookup", async(req, res, next) => {
+  await appDataSource.manager.query(
+      `SELECT 
+              users.id as userId, 
+              users.profile_image as userProfileImage, 
+              posts.id as postingId, 
+              posts.imageurl as postingImageUrl, 
+              posts.content as postingContent 
+          FROM users 
+          INNER JOIN posts 
+          ON users.id = posts.user_id
+      `, (err, rows) => {
+          res.status(200).json({ "data" : rows });
+      });
+})
 // 서버 실행
 app.listen(6000, function() {
   console.log('server listening on port 6000');
