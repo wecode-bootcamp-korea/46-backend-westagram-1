@@ -37,20 +37,36 @@ app.get('/ping', function(req, res, next) {
 
 
 
-app.post('/users/signup', async(req, res, next) => {
-  const { name, email, profileImage, password } = req.body
+// app.post('/users/signup', async(req, res, next) => {
+//   const { name, email, profileImage, password } = req.body
+
+//   await appDataSource.query(
+//       `INSERT INTO users(
+//           name, 
+//           email,
+//           profile_image,
+//           password
+//       ) VALUES (?, ?, ?, ?);
+//       `, [name, email, profileImage, password]
+//   );
+
+//   res.status(201).json({ message : "userCreated"});
+// }) 
+
+app.post('/posts/signup', async(req, res, next) => {
+  const { title, content, imageUrl, user_id } = req.body
 
   await appDataSource.query(
-      `INSERT INTO users(
-          name, 
-          email,
-          profile_image,
-          password
+      `INSERT INTO posts(
+          title, 
+          content,
+          imageUrl,
+          user_id
       ) VALUES (?, ?, ?, ?);
-      `, [name, email, profileImage, password]
+      `, [title, content, imageUrl, user_id]
   );
 
-  res.status(201).json({ message : "userCreated"});
+  res.status(201).json({ message : "postCreated"});
 }) 
 
 // 서버 실행
