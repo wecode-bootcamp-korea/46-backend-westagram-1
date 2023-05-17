@@ -40,6 +40,7 @@ CREATE TABLE `likes` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
   `post_id` int NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `post_id` (`post_id`),
