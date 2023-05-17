@@ -1,8 +1,8 @@
-require("dotenv").config(); //환경변수
+require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
-const logger = require("morgan"); // morgan 모듈 추가하기
+const logger = require("morgan");
 const app = express();
 const { DataSource } = require("typeorm");
 
@@ -22,10 +22,14 @@ const appDataSource = new DataSource({
   database: process.env.DB_DATABASE,
 });
 
-appDataSource.initialize().then(() => {
-  console.log("Data Source has been initialized!");
-});
-
+appDataSource
+  .initialize()
+  .then(() => {
+    console.log("Data Source has been initialized!");
+  })
+  .catch((err) => {
+    console.error("Error during Data Source initialization", err);
+  });
 app.get("/ping", function (req, res) {
   res.json({ message: "pong" });
 });
@@ -34,7 +38,6 @@ app.get("/ping", function (req, res) {
 
 app.post("/users", async (req, res) => {
   const { name, email, profileImage, password } = req.body;
-  console.log(name);
 
   await appDataSource.query(
     `INSERT INTO users(
@@ -47,6 +50,22 @@ app.post("/users", async (req, res) => {
     [name, email, profileImage, password]
   );
   res.status(201).json({ message: "usersCreated" });
+});
+
+app.post("/posts", async (req, res) => {
+  const { title, content, userId, imageUrl } = req.body; //
+
+  await appDataSource.query(
+    `INSERT INTO posts(
+                title,
+                content,
+                user_id,
+                image_url
+            ) VALUES (?, ?, ?, ?);
+            `,
+    [title, content, userId, imageUrl]
+  );
+  res.status(201).json({ message: "postsCreated" });
 });
 
 app.listen(PORT, function () {
