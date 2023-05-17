@@ -1,0 +1,11 @@
+DDB_CONNECTION = sql 이름
+DB_HOST = current computer
+DB_USERNAME = mysql username
+DB_PASSWORD = mysql password
+DB_DATABASE = database_name
+DB_PORT = 3306
+DB_LOGGING =TRUE
+
+DATABASE_URL="mysql://username:password@127.0.0.1:3306/database_name"
+
+port = 3000;
