@@ -16,7 +16,7 @@ app.use(express.json())
 app.post('/users/signup', newUserSignUp)
 app.post('/posts/post', userCreateNewPost)
 app.get('/posts/all', readAllPosts)
-app.get('/users/user/post', readUserPosts)
+app.get('/posts/:userId', readUserPosts)
 
 myDataSource.initialize()
 

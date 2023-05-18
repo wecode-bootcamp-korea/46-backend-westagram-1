@@ -1,41 +1,32 @@
 import { myDataSource } from '../../db.js'
 import { app } from '../../app.js'
-import util from 'util'
 
 const readUserPosts = async (req, res) => {
   try {
-    const userData = await myDataSource.query(
-      `SELECT posts.user_id AS userId, users.profile_image AS userProfileImage  
-        FROM posts, users`
+    const { userId } = req.params
+    const [post] = await myDataSource.query(
+      `
+	SELECT 
+  users.id AS userId,
+  users.profile_image AS userProfileImage,
+  JSON_ARRAYAGG(
+    JSON_OBJECT(
+      'postingId', posts.id,
+      'postingImageUrl', posts.image_url,
+      'postingContent', posts.content
+    )
+  ) AS postings
+  FROM users
+  JOIN posts ON users.id = posts.user_id
+  WHERE users.id = ?
+  GROUP BY users.id, users.profile_image;
+	`,
+      [userId]
     )
 
-    const postData = await myDataSource.query(
-      `SELECT posts.id AS postingId, posts.image_url AS postingImageUrl, posts.content AS postingContent
-        FROM posts`
-    )
-    console.log(userData)
-    console.log(postData)
-
-    const postsToUser = async (userData, postData) => {
-      const combinedData = userData.map((userObj) => {
-        const userWithPostings = Object.assign({}, userObj, { postings: [] })
-
-        for (let post of postData) {
-          if (userObj.userId === post.postingId) {
-            userWithPostings.postings.push(post)
-          }
-        }
-        return userWithPostings
-      })
-      return combinedData
-    }
-
-    const userPostingData = await postsToUser(userData, postData)
-    console.log(util.inspect(userPostingData, false, null, true))
-    res.status(201).json({
-      data: {
-        ...userPostingData,
-      },
+    console.log(post)
+    res.status(200).json({
+      data: post,
     })
   } catch (error) {
     console.error(error)
