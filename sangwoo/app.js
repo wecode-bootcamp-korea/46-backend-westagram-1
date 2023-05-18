@@ -7,7 +7,6 @@ const { DataSource } = require("typeorm");
 
 const app = express();
 
-//미들웨어
 app.use(cors());
 app.use(logger("combined"));
 app.use(express.json());
@@ -34,7 +33,6 @@ app.get("/ping", function (req, res) {
   res.json({ message: "pong" });
 });
 
-//create a users
 app.post("/users/signup", async (req, res) => {
   const { name, email, profileImage, password } = req.body;
 
@@ -50,22 +48,6 @@ app.post("/users/signup", async (req, res) => {
     [name, email, profileImage, password]
   );
   res.status(201).json({ message: "usersCreated" });
-});
-
-app.post("/posts", async (req, res) => {
-  const { title, content, userId, imageUrl } = req.body; //
-
-  await appDataSource.query(
-    `INSERT INTO posts(
-                title,
-                content,
-                user_id,
-                image_url
-            ) VALUES (?, ?, ?, ?);
-            `,
-    [title, content, userId, imageUrl]
-  );
-  res.status(201).json({ message: "postsCreated" });
 });
 
 const PORT = process.env.PORT;
