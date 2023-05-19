@@ -5,9 +5,11 @@ const likeUserPost = async (req, res) => {
   try {
     const { postId, userId } = req.params
     await database.query(
-      `
-    INSERT INTO
-      likes (post_id, user_id) 
+      `INSERT INTO
+        likes (
+        post_id, 
+        user_id
+      ) 
       VALUES(?, ?)`,
       [postId, userId]
     )

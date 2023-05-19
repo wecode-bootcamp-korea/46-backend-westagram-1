@@ -13,7 +13,6 @@ const getAllPosts = async (req, res) => {
         FROM posts
         JOIN users ON users.id = posts.user_id`
     )
-    console.log(queryData)
     res.status(201).json({ data: queryData })
   } catch (error) {
     console.error(error)

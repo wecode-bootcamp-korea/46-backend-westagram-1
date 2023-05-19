@@ -5,7 +5,12 @@ const createNewPost = async (req, res) => {
   try {
     const { userId, title, content, imageUrl } = req.body
     await database.query(
-      `INSERT INTO posts (user_id, title, content, image_url)
+      `INSERT INTO posts (
+        user_id, 
+        title, 
+        content, 
+        image_url
+        )
         VALUES(?, ?, ?, ?)`,
       [userId, title, content, imageUrl]
     )

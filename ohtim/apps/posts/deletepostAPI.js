@@ -4,7 +4,12 @@ import { app } from '../../app.js'
 const deleteUserPostById = async (req, res) => {
   try {
     const { postId } = req.params
-    await database.query(`DELETE FROM posts WHERE posts.id = ?`, [postId])
+    await database.query(
+      `DELETE 
+        FROM posts 
+        WHERE posts.id = ?`,
+      [postId]
+    )
 
     res.status(200).json({
       message: 'post delete successful! 💥',
