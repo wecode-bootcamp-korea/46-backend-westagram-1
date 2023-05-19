@@ -1,10 +1,10 @@
-import { myDataSource } from '../../db.js'
+import { database } from '../../db.js'
 import { app } from '../../app.js'
 
 const editUserPost = async (req, res) => {
   try {
     const { userId, postId, title, content } = req.body
-    await myDataSource.query(
+    await databse.query(
       ` 
   UPDATE posts
     SET title = ?,

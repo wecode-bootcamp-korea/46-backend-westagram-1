@@ -1,10 +1,10 @@
-import { myDataSource } from '../../db.js'
+import { database } from '../../db.js'
 import { app } from '../../app.js'
 
-const readUserPosts = async (req, res) => {
+const getPostsByUserId = async (req, res) => {
   try {
     const { userId } = req.params
-    const [post] = await myDataSource.query(
+    const [post] = await database.query(
       `
 	SELECT 
   users.id AS userId,
@@ -33,4 +33,4 @@ const readUserPosts = async (req, res) => {
   }
 }
 
-export { readUserPosts }
+export { getPostsByUserId }

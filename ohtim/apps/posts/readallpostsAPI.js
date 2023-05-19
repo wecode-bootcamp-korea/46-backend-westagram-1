@@ -1,9 +1,9 @@
-import { myDataSource } from '../../db.js'
+import { database } from '../../db.js'
 import { app } from '../../app.js'
 
-const readAllPosts = async (req, res) => {
+const getAllPosts = async (req, res) => {
   try {
-    const queryData = await myDataSource.query(
+    const queryData = await databse.query(
       `SELECT 
           posts.user_id AS userId, 
           users.profile_image AS userProfileImage, 
@@ -20,4 +20,4 @@ const readAllPosts = async (req, res) => {
   }
 }
 
-export { readAllPosts }
+export { getAllPosts }

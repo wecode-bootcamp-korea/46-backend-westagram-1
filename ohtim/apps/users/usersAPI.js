@@ -1,11 +1,16 @@
-import { myDataSource } from '../../db.js'
+import { database } from '../../db.js'
 import { app } from '../../app.js'
 
-const newUserSignUp = async (req, res) => {
+const createNewUser = async (req, res) => {
   try {
-    const { name, email, password, profile_image } = req.body
-    await myDataSource.query(
-      `INSERT INTO users (name, email, password, profile_image) 
+    const { name, email, password, profileImage } = req.body
+    await database.query(
+      `INSERT INTO users (
+        name, 
+        email, 
+        password, 
+        profile_image
+      ) 
       VALUES(?, ?, ?, ?)`,
       [name, email, password, profileImage]
     )
@@ -17,4 +22,4 @@ const newUserSignUp = async (req, res) => {
   }
 }
 
-export { newUserSignUp }
+export { createNewUser }

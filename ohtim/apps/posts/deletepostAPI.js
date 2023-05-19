@@ -1,10 +1,10 @@
-import { myDataSource } from '../../db.js'
+import { database } from '../../db.js'
 import { app } from '../../app.js'
 
-const deleteUserPost = async (req, res) => {
+const deleteUserPostById = async (req, res) => {
   try {
     const { postId } = req.params
-    await myDataSource.query(`DELETE FROM posts WHERE posts.id = ?`, [postId])
+    await database.query(`DELETE FROM posts WHERE posts.id = ?`, [postId])
 
     res.status(200).json({
       message: 'post delete successful! 💥',
@@ -14,4 +14,4 @@ const deleteUserPost = async (req, res) => {
   }
 }
 
-export { deleteUserPost }
+export { deleteUserPostById }
