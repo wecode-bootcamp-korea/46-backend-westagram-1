@@ -7,6 +7,7 @@ import { newUserSignUp } from './apps/users/usersAPI.js'
 import { userCreateNewPost } from './apps/posts/newpostAPI.js'
 import { readAllPosts } from './apps/posts/readallpostsAPI.js'
 import { readUserPosts } from './apps/posts/readuserpostAPI.js'
+import { editUserPost } from './apps/posts/edituserpostAPI.js'
 
 const app = express()
 
@@ -17,6 +18,7 @@ app.post('/users/signup', newUserSignUp)
 app.post('/posts', userCreateNewPost)
 app.get('/posts', readAllPosts)
 app.get('/posts/:userId', readUserPosts)
+app.patch('/posts', editUserPost)
 
 myDataSource.initialize()
 
