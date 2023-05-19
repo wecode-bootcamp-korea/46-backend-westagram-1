@@ -50,7 +50,7 @@ app.post("/users/signup", async (req, res) => {
   res.status(201).json({ message: "usersCreated" });
 });
 
-app.post("/posts/signup", async (req, res) => {
+app.post("/posts", async (req, res) => {
   const { title, content, userId, imageUrl } = req.body;
   await appDataSource.query(
     `
@@ -148,7 +148,20 @@ app.delete("/posts/delete/:postId", async (req, res) => {
     [postId]
   );
   res.status(200).json({ message: "successfully deleted" });
-  console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!:", result);
+});
+
+app.post("/likes/:userId/:postId", async (req, res) => {
+  const { userId, postId } = req.params;
+  await appDataSource.query(
+    `
+      INSERT INTO likes(
+        user_id,
+        post_id
+      ) VALUES (?,?)
+      `,
+    [userId, postId]
+  );
+  res.status(201).json({ message: "likesCreated" });
 });
 
 const PORT = process.env.PORT;
