@@ -8,6 +8,7 @@ import { userCreateNewPost } from './apps/posts/newpostAPI.js'
 import { readAllPosts } from './apps/posts/readallpostsAPI.js'
 import { readUserPosts } from './apps/posts/readuserpostAPI.js'
 import { editUserPost } from './apps/posts/edituserpostAPI.js'
+import { deleteUserPost } from './apps/posts/deletepostAPI.js'
 
 const app = express()
 
@@ -19,11 +20,12 @@ app.post('/posts', userCreateNewPost)
 app.get('/posts', readAllPosts)
 app.get('/posts/:userId', readUserPosts)
 app.patch('/posts', editUserPost)
+app.delete('/posts/:postId', deleteUserPost)
 
 myDataSource.initialize()
 
 app.listen(PORT, () => {
-  console.log(`👂 Listening on 127.0.0.1:${PORT}...`)
+  console.log(`👂 Listening on 127.0.0.1:${PORT}... 🙉`)
 })
 
 export { app }
