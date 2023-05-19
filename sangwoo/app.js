@@ -8,7 +8,7 @@ const { DataSource } = require("typeorm");
 const app = express();
 
 app.use(cors());
-app.use(logger("combined"));
+app.use(logger("dev"));
 app.use(express.json());
 
 const appDataSource = new DataSource({
@@ -148,6 +148,7 @@ app.delete("/posts/delete/:postId", async (req, res) => {
     [postId]
   );
   res.status(200).json({ message: "successfully deleted" });
+  console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!:", result);
 });
 
 const PORT = process.env.PORT;
