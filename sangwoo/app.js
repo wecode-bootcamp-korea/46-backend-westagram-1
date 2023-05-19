@@ -67,7 +67,7 @@ app.post("/posts/signup", async (req, res) => {
   res.status(201).json({ message: "postsCreated" });
 });
 
-app.get("/posts/lookup/", async (req, res) => {
+app.get("/posts/lookup", async (req, res) => {
   await appDataSource.posts.query(
     `
     SELECT 
@@ -108,6 +108,35 @@ app.get("/posts/posting/:id", async (req, res) => {
     [id]
   );
   res.status(200).json({ data: userPosting });
+});
+
+app.patch("/posts/:userId/:postId", async (req, res) => {
+  const { userId, postId } = req.params;
+  const { content } = req.body;
+  const updateContent = await appDataSource.query(
+    `
+    UPDATE posts
+    SET content=?
+    WHERE user_id=? and id=?
+    `,
+    [content, userId, postId]
+  );
+  const updatePost = await appDataSource.query(
+    `
+    SELECT
+      users.id as userId, 
+      users.name as userName,
+      posts.id as postingID,
+      posts.title as postingTitle,
+      posts.content as postingContent
+    FROM users 
+    INNER JOIN posts
+    ON posts.user_id = users.id
+    WHERE users.id=? and posts.id=? 
+    `,
+    [userId, postId]
+  );
+  res.status(200).json({ data: updatePost });
 });
 
 const PORT = process.env.PORT;
