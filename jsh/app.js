@@ -6,12 +6,10 @@ const cors = require('cors');
 const { DataSource } = require('typeorm');
 
 
-// 미들웨어 등록
 app.use(cors());
 app.use(express.json());
 const port = process.env.port
 
-// 환경 변수를 사용하여 데이터베이스 연결 설정
 const appDataSource = new DataSource({
   type: process.env.DB_CONNECTION,
   host: process.env.DB_HOST,
@@ -21,13 +19,13 @@ const appDataSource = new DataSource({
   database: process.env.DB_DATABASE
 });
 
-// 데이터 소스 초기화
 appDataSource.initialize()
   .then(() => {
-  });
+  })
+  .catch(err => console.error("Error during Data Source initialization", err));
 
 
-// 라우팅 설정
+
 app.get('/ping', function(req, res, next) {
   res.json({ message: 'pong' });
 });
@@ -99,6 +97,7 @@ app.get("/posts/lookup_1user", async(req, res, next) => {
           res.status(200).json({ "data" : rows });
       });
 })
-서버 실행
-app.listen(6000, function() {
+
+app.listen(port, function() {
+  console.log(`server listening on port ${port}`);
 });
