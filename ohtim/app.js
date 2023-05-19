@@ -9,6 +9,7 @@ import { readAllPosts } from './apps/posts/readallpostsAPI.js'
 import { readUserPosts } from './apps/posts/readuserpostAPI.js'
 import { editUserPost } from './apps/posts/edituserpostAPI.js'
 import { deleteUserPost } from './apps/posts/deletepostAPI.js'
+import { likeUserPost } from './apps/posts/likepostAPI.js'
 
 const app = express()
 
@@ -21,6 +22,7 @@ app.get('/posts', readAllPosts)
 app.get('/posts/:userId', readUserPosts)
 app.patch('/posts', editUserPost)
 app.delete('/posts/:postId', deleteUserPost)
+app.post('/posts/:postId/:userId', likeUserPost)
 
 myDataSource.initialize()
 
