@@ -3,11 +3,11 @@ import { app } from '../../app.js'
 
 const newUserSignUp = async (req, res) => {
   try {
-    const { name, email, password, profile_image} = req.body
+    const { name, email, password, profile_image } = req.body
     await myDataSource.query(
       `INSERT INTO users (name, email, password, profile_image) 
       VALUES(?, ?, ?, ?)`,
-      [name, email, passwordm profileImage]
+      [name, email, password, profileImage]
     )
     res.status(201).json({
       message: 'New user created! 👋',
