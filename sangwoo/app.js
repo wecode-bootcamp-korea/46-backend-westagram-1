@@ -51,8 +51,7 @@ app.post("/users/signup", async (req, res) => {
 });
 
 app.post("/posts/signup", async (req, res) => {
-  const { title, content, userId, imageUrl } = req.body; //
-
+  const { title, content, userId, imageUrl } = req.body;
   await appDataSource.query(
     `
     INSERT INTO posts(
@@ -116,10 +115,10 @@ app.patch("/posts/:userId/:postId", async (req, res) => {
   const updateContent = await appDataSource.query(
     `
     UPDATE posts
-    SET content=?
-    WHERE user_id=? and id=?
+    SET content= ?
+    WHERE user_id=${userId} and id=${postId}
     `,
-    [content, userId, postId]
+    [content]
   );
   const updatePost = await appDataSource.query(
     `
@@ -132,11 +131,23 @@ app.patch("/posts/:userId/:postId", async (req, res) => {
     FROM users 
     INNER JOIN posts
     ON posts.user_id = users.id
-    WHERE users.id=? and posts.id=? 
-    `,
-    [userId, postId]
+    WHERE users.id=${userId} and posts.id=${postId} 
+    `
   );
   res.status(200).json({ data: updatePost });
+});
+
+app.delete("/posts/delete/:postId", async (req, res) => {
+  const { postId } = req.params;
+  const result = await appDataSource.query(
+    `
+    DELETE 
+    FROM posts
+    WHERE id = ?
+    `,
+    [postId]
+  );
+  res.status(200).json({ message: "successfully deleted" });
 });
 
 const PORT = process.env.PORT;
