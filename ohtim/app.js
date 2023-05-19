@@ -14,7 +14,7 @@ app.use(cors())
 app.use(morgan('dev'))
 app.use(express.json())
 app.post('/users/signup', newUserSignUp)
-app.post('/posts/post', userCreateNewPost)
+app.post('/posts', userCreateNewPost)
 app.get('/posts/all', readAllPosts)
 app.get('/posts/:userId', readUserPosts)
 
