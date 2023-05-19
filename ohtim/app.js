@@ -15,7 +15,7 @@ app.use(morgan('dev'))
 app.use(express.json())
 app.post('/users/signup', newUserSignUp)
 app.post('/posts', userCreateNewPost)
-app.get('/posts/all', readAllPosts)
+app.get('/posts', readAllPosts)
 app.get('/posts/:userId', readUserPosts)
 
 myDataSource.initialize()
