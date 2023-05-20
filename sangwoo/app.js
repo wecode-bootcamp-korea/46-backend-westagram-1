@@ -66,7 +66,7 @@ app.post("/posts", async (req, res) => {
   res.status(201).json({ message: "postsCreated" });
 });
 
-app.get("/posts/lookup", async (req, res) => {
+app.get("/posts", async (req, res) => {
   await appDataSource.posts.query(
     `
     SELECT 
@@ -147,7 +147,7 @@ app.delete("/posts/delete/:postId", async (req, res) => {
     `,
     [postId]
   );
-  res.status(200).json({ message: "successfully deleted" });
+  res.status(204).json({ message: "successfully deleted" });
 });
 
 app.post("/likes/:userId/:postId", async (req, res) => {
