@@ -36,7 +36,7 @@ app.get("/ping", function (req, res) {
 app.post("/users/signup", async (req, res) => {
   const { name, email, profileImage, password } = req.body;
 
-  await appDataSource.query(
+  const userSignup = await appDataSource.query(
     `
     INSERT INTO users(
       name,
@@ -52,7 +52,7 @@ app.post("/users/signup", async (req, res) => {
 
 app.post("/posts", async (req, res) => {
   const { title, content, userId, imageUrl } = req.body;
-  await appDataSource.query(
+  const postsPosting = await appDataSource.query(
     `
     INSERT INTO posts(
       title,
@@ -67,7 +67,7 @@ app.post("/posts", async (req, res) => {
 });
 
 app.get("/posts", async (req, res) => {
-  await appDataSource.posts.query(
+  const postsLookup = await appDataSource.posts.query(
     `
     SELECT 
       users.id as userId, 
@@ -79,9 +79,7 @@ app.get("/posts", async (req, res) => {
       INNER JOIN posts 
       ON users.id = posts.user_id
     `,
-    (err, rows) => {
       res.status(200).json({ data: rows });
-    }
   );
 });
 
