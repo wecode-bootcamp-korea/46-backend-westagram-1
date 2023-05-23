@@ -1,13 +1,15 @@
-const userService = require("../services/userService");
+const likeService = require("../services/likeService");
 
-const signUp = async (req, res) => {
+const clickLike = async (req, res) => {
   try {
     const { name, email, profileImage, password } = req.body;
 
     if (!name || !email || !profileImage || !password) {
       return res.status(400).json({ message: "KEY_ERROR" });
     }
+
     await userService.signUp(name, email, profileImage, password);
+
     return res.status(201).json({ message: "SIGNUP_SUCCESS" });
   } catch (err) {
     console.log(err);
@@ -16,5 +18,5 @@ const signUp = async (req, res) => {
 };
 
 module.exports = {
-  signUp,
+  userSignup,
 };
