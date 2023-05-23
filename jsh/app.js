@@ -4,13 +4,18 @@ const express = require('express');
 const cors = require('cors');
 const logger = require('morgan');
 const { DataSource } = require('typeorm');
+
+const routes = require('./routes');
+
 const app = express();
+const PORT = process.env.PORT;
+
 
 app.use(cors());
 app.use(logger('combined'));
 app.use(express.json());
+app.use(routes);
 
-const PORT = process.env.PORT;
 
 const appDataSource = new DataSource({
   type: process.env.DB_CONNECTION,
@@ -51,7 +56,7 @@ app.post('/users/signup', async(req, res, next) => {
 //과제 4번===================================================
 
   app.get("/posts/lookup", async(req, res, next) => {
-    await appDataSource.manager.query(
+    await appDataSource.query(
         `SELECT 
                 users.id as userId, 
                 users.profile_image as userProfileImage, 
@@ -153,7 +158,7 @@ app.post("/likes/:userId/:postId", async(req, res, next) => {
   await appDataSource.query(
     `INSERT INTO likes(
       user_id,
-      post_id
+      post_id       
     ) VALUES (${userId}, ${postId});
     `);
   res.status(200).json({masage:"likeCreated"});
