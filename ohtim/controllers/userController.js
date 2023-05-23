@@ -1,4 +1,4 @@
-import { createUser } from '../models/userDao.js'
+import { signUpValidation } from '../services/userServices.js'
 
 const signUp = async (req, res) => {
   try {
@@ -9,7 +9,7 @@ const signUp = async (req, res) => {
         message: 'KEY_ERROR 👀',
       })
     }
-    await createUser(name, email, password, profileImage)
+    await signUpValidation(name, email, password, profileImage)
     return res.status(201).json({
       message: 'SIGNUP_SUCCESS 🐣',
     })
