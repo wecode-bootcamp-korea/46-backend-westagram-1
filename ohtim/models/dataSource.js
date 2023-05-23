@@ -1,8 +1,7 @@
-import * as dotenv from 'dotenv'
+import dotenv from 'dotenv'
 dotenv.config()
-import { DataSource } from 'typeorm'
 
-const PORT = process.env.PORT
+import { DataSource } from 'typeorm'
 
 const database = new DataSource({
   type: process.env.DB_CONNECTION,
@@ -13,4 +12,4 @@ const database = new DataSource({
   database: process.env.DB_DATABASE,
 })
 
-export { PORT, database }
+export { database }
