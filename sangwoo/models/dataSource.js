@@ -9,4 +9,13 @@ const dataSource = new DataSource({
   database: process.env.DB_DATABASE,
 });
 
+dataSource
+  .initialize()
+  .then(() => {
+    console.log("Data Source has been initialized!");
+  })
+  .catch((err) => {
+    console.error("Error during Data Source initialization", err);
+  });
+
 module.exports = { dataSource };
