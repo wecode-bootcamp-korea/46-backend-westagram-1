@@ -30,10 +30,8 @@ const signIn = async (req, res) => {
         message: 'SIGN_IN_KEY_ERROR 🥦',
       })
     }
-    await signInValidation(email, password)
-    return res.status(200).json({
-      message: 'SIGN_IN_SUCCESSFUL 🥓',
-    })
+    const userToken = await signInValidation(email, password)
+    return res.status(200).json(userToken)
   } catch (error) {
     console.error(error)
     return res.status(error.statusCode || 500).json({

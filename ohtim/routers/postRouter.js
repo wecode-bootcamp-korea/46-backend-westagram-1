@@ -7,14 +7,15 @@ import {
   deleteUserPostById,
   likeUserPost,
 } from '../controllers/postsController.js'
+import { verifyToken } from '../utils/tokenUtility.js'
 
 const postRouter = Router()
 
-postRouter.post('/', createPostByUserId)
-postRouter.get('/', getPosts)
-postRouter.get('/:userId', getPostsByUserId)
-postRouter.patch('/', patchPostByUser)
-postRouter.delete('/:postId', deleteUserPostById)
-postRouter.post('/:postId/:userId', likeUserPost)
+postRouter.post('/', verifyToken, createPostByUserId)
+postRouter.get('/', verifyToken, getPosts)
+postRouter.get('/:userId', verifyToken, getPostsByUserId)
+postRouter.patch('/', verifyToken, patchPostByUser)
+postRouter.delete('/:postId', verifyToken, deleteUserPostById)
+postRouter.post('/:postId/:userId', verifyToken, likeUserPost)
 
 export { postRouter }

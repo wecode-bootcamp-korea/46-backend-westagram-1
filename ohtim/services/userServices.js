@@ -1,4 +1,8 @@
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
+import dotenv from 'dotenv'
+dotenv.config()
+
 import {
   createUser,
   selectUserByEmail,
@@ -45,10 +49,19 @@ const passwordValidation = async (email, password) => {
   const hashedPassword = getHashedPassword[0].password
 
   const checkPasswordMatch = await bcrypt.compare(password, hashedPassword)
-  console.log(`password check? ${checkPasswordMatch}`)
   if (!checkPasswordMatch) {
     return
   }
+  return await createToken(email)
+}
+
+const createToken = async (email) => {
+  const accessToken = await jwt.sign({ id: email }, process.env.SECRET_KEY, {
+    algorithm: process.env.ALGORITHM,
+    expiresIn: process.env.JWT_EXPIRES_IN,
+  })
+
+  return accessToken
 }
 
 export { signUpValidation, signInValidation }
