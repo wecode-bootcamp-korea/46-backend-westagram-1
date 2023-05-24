@@ -89,7 +89,7 @@ const likeUserPost = async (req, res) => {
     const { postId, userId } = req.params
     await insertLikeUserPost(postId, userId)
     return res.status(201).json({
-      message: 'INSERT_❤️_LIKE_SUCESSFUL',
+      message: 'INSERT_❤️__SUCESSFUL',
     })
   } catch (error) {
     return res.status(error.statusCode || 500).json({
