@@ -13,6 +13,7 @@ const signIn = async (userId, password) => {
   if (!isMatched) {
     const error = new Error("INVALID_USER");
     error.statusCode = 401;
+    console.log(error);
     throw error;
   }
   const payload = {
@@ -24,21 +25,21 @@ const signIn = async (userId, password) => {
   };
 
   const accessToken = jwt.sign(payload, process.env.JWT_SECRET, header);
-  console.log("5555555:", accessToken);
+  console.log(accessToken);
   return accessToken;
 };
 
 const signUp = async (name, email, profileImage, password) => {
-  const pwValidation = new RegExp(
-    "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,20})"
-  );
-  if (!pwValidation.test(password)) {
-    const err = new Error("PASSWORD_IS_NOT_VALID");
-    err.statusCode = 409;
-    throw err;
-  }
-  // const saltRounds = 10;
-  const hashedPassword = await bcrypt.hash(password, 10);
+  // const pwValidation = new RegExp(
+  //   "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,20})"
+  // );
+  // if (!pwValidation.test(password)) {
+  //   const err = new Error("PASSWORD_IS_NOT_VALID");
+  //   err.statusCode = 409;
+  //   throw err;
+  // }
+  const saltRounds = 10;
+  const hashedPassword = await bcrypt.hash(password, saltRounds);
   const createUser = await userDao.createUser(
     name,
     email,
