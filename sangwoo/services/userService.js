@@ -1,13 +1,31 @@
 const userDao = require("../models/userDao");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const signIn = async (userId, password) => {
   const getUser = await userDao.getByUserIdPassword(userId, password);
-  if (!getUser.userId || !bcrypt.compare(password, getUser.password)) {
-    throw new Error("INVAILD USERId OR PASSWORD");
+  if (!getUser) {
+    throw new Error("INVAILD ERROR");
   }
 
-  return signIn;
+  const isMatched = await bcrypt.compare(password, getUser.password);
+
+  if (!isMatched) {
+    const error = new Error("INVALID_USER");
+    error.statusCode = 401;
+    throw error;
+  }
+  const payload = {
+    userId: getUser.userId,
+  };
+  const header = {
+    algorithm: process.env.ALGORITHM,
+    expiresIn: process.env.JWT_EXPIRES_IN,
+  };
+
+  const accessToken = jwt.sign(payload, process.env.JWT_SECRET, header);
+  console.log("5555555:", accessToken);
+  return accessToken;
 };
 
 const signUp = async (name, email, profileImage, password) => {

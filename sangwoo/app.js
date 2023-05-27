@@ -5,6 +5,7 @@ const cors = require("cors");
 const logger = require("morgan");
 const { dataSource } = require("./models/dataSource");
 const routes = require("./routes");
+const { accessToken } = require("./middleware/auth");
 
 const app = express();
 
