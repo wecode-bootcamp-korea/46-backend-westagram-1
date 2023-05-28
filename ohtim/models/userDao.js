@@ -13,44 +13,53 @@ const createUser = async (name, email, hashedPassword, profileImage) => {
       [name, email, hashedPassword, profileImage]
     )
   } catch (err) {
-    const error = new Error('NOT_A_VALID_INPUT! ')
-    error.statusCode = 500
-    throw error
+    if (err.code === 'ER_DUP_ENTRY') {
+      throw new Error('USER_ALREADY_EXIST_WITH_SAME_EMAIL')
+    }
+    console.error(err)
   }
 }
 
-const selectUserByEmail = async (email) => {
+const getUserByEmail = async (email) => {
   try {
-    return await database.query(
+    const [result] = await database.query(
       `
-      SELECT email
+      SELECT 
+        id, 
+        name, 
+        email, 
+        password, 
+        profile_image AS profileImage
       FROM users
       WHERE email = ?
       `,
       [email]
     )
+    return result
   } catch (err) {
-    const error = new Error('NOT_A_VALID_EMAIL!')
-    error.statusCode = 500
-    throw error
+    console.error(err)
   }
 }
 
-const getUserHashedPasswordByEmail = async (email, password) => {
+const getUserById = async (id) => {
   try {
-    return await database.query(
+    const [result] = await database.query(
       `
-    SELECT password
-    FROM users
-    WHERE email = ?
-    `,
-      [email]
+      SELECT 
+        id, 
+        name, 
+        email, 
+        password, 
+        profile_image AS profileImage
+      FROM users
+      WHERE id = ?
+      `,
+      [id]
     )
+    return result
   } catch (err) {
-    const error = new Error('NOT_A_VALID_PASSWORD!')
-    error.statusCode = 500
-    throw error
+    console.error(err)
   }
 }
 
-export { createUser, selectUserByEmail, getUserHashedPasswordByEmail }
+export { createUser, getUserByEmail, getUserById }

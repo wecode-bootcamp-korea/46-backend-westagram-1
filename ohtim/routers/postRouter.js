@@ -7,7 +7,7 @@ import {
   deleteUserPostById,
   likeUserPost,
 } from '../controllers/postsController.js'
-import { verifyToken } from '../utils/jwtUtility.js'
+import { verifyToken } from '../utils/authHandler.js'
 
 const postRouter = Router()
 

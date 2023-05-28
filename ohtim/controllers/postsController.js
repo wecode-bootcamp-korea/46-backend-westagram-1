@@ -11,7 +11,7 @@ const createPostByUserId = async (req, res) => {
   try {
     console.log(req.body)
     const { userId, title, content, imageUrl } = req.body
-    if (!content || !imageUrl) {
+    if (!userId || !title || !content || !imageUrl) {
       return res.status(400).json({
         message: 'MISSING_CONTENT 🥥',
       })

@@ -5,14 +5,17 @@ const signUp = async (req, res) => {
     const { name, email, password, profileImage } = req.body
 
     if (!name || !email || !password || !profileImage) {
-      return res.status(400).json({
-        message: 'SIGN_UP_KEY_ERROR 🍳',
-      })
+      throw new Error('SIGN_UP_KEY_ERROR 🍳')
     }
-
-    await signUpValidation(name, email, password, profileImage)
+    const createUser = await signUpValidation(
+      name,
+      email,
+      password,
+      profileImage
+    )
+    console.log(createUser)
     return res.status(201).json({
-      message: 'SIGN_UP_SUCCESS 🐣',
+      message: '201 - SIGN_UP_SUCCESS 🐣',
     })
   } catch (error) {
     console.error(error)
@@ -26,9 +29,7 @@ const signIn = async (req, res) => {
   try {
     const { email, password } = req.body
     if (!email || !password) {
-      return res.status(400).json({
-        message: 'SIGN_IN_KEY_ERROR 🥦',
-      })
+      throw new Error('401 - SIGN_IN_KEY_ERROR 🫠')
     }
     const userToken = await signInValidation(email, password)
     return res.status(200).json(userToken)

@@ -61,16 +61,16 @@ const selectPostsByUser = async (userId) => {
   }
 }
 
-const updateUserPost = async (title, content, userId, postId) => {
+const updateUserPost = async (userId, postId, title, content) => {
   try {
     return await database.query(
       `UPDATE posts
         SET 
+        user_id = ?,
         title = ?,
-        content = ?,
-        user_id = ?
+        content = ?
       WHERE id = ?`,
-      [title, content, userId, postId]
+      [userId, title, content, postId]
     )
   } catch (error) {
     console.error(error)

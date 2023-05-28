@@ -1,27 +1,51 @@
 import bcrypt from 'bcrypt'
-import { selectUserByEmail } from '../models/userDao.js'
-import { hashUserPassword, passwordValidation } from '../utils/bcryptUtility.js'
-import { createToken } from '../utils/jwtUtility.js'
+import jwt from 'jsonwebtoken'
+import { getUserByEmail, getUserById, createUser } from '../models/userDao.js'
+
+const hashUserPassword = async (plaintextPassword) => {
+  const saltRounds = 10
+  return await bcrypt.hash(plaintextPassword, saltRounds)
+}
 
 const signUpValidation = async (name, email, password, profileImage) => {
   const pwValidation = new RegExp(
     '^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,20})'
   )
   if (!pwValidation.test(password)) {
-    return
+    throw new Error('401 - PASSWORD_IS_NOT_VALID 🙈')
   }
-  // return hashed user password from bcryptUtility
-  return await hashUserPassword(name, email, password, profileImage)
+  const hashedPassword = await hashUserPassword(password)
+
+  return await createUser(name, email, hashedPassword, profileImage)
 }
 
-const signInValidation = async (email, password) => {
+const signInValidation = async (email, plaintextPassword) => {
   // check user email exist in db, if not break out
-  const isUser = await selectUserByEmail(email)
-  if (!isUser) {
-    return
+  console.log('sign in validation')
+  const user = await getUserByEmail(email)
+  console.log(user)
+  if (!user) {
+    throw new Error('404 - USER_DOES_NOT_EXIST 🙊')
   }
-  // if user email exist validate password from bcryptUtility
-  return await passwordValidation(email, password)
+
+  const checkPasswordMatch = await bcrypt.compare(
+    plaintextPassword,
+    user.password
+  )
+
+  if (!checkPasswordMatch) {
+    throw new Error('401 - USER_PASSWORD_DOES_NOT_MATCH 🙉')
+  }
+  const accessToken = await jwt.sign(
+    { id: user.id },
+    process.env.SECRET_JWT_KEY,
+    {
+      algorithm: process.env.ALGORITHM,
+      expiresIn: process.env.JWT_EXPIRES_IN,
+    }
+  )
+  console.log(accessToken)
+  return accessToken
 }
 
-export { signUpValidation, signInValidation }
+export { signUpValidation, signInValidation, getUserById }
